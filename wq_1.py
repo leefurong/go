@@ -13,6 +13,9 @@ qizi = []
 WIDTH = qipan.width
 HEIGHT = qipan.height
 
+def pos2grid(pos):
+    print(pos)
+
 def draw():
     qipan.draw()
     if turn == "black":
@@ -27,6 +30,7 @@ def on_mouse_move(pos):
     white.center = pos
 
 def on_mouse_down(pos, button):
+    pos2grid(pos)
     if button == mouse.LEFT:
         if kexia():
             luozi(pos)
