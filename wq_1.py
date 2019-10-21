@@ -4,6 +4,22 @@ qipan = Actor("qipan")
 black = Actor("black")
 white = Actor("white")
 
+MIN = 14
+MAX = 608
+CELL = (MAX-MIN)/18
+
+def zbToJcd(x):
+    """把坐标转换成交叉点的编号"""
+    jcd = round((x-MIN)/CELL+1)
+    if jcd<1:
+        jcd = 1
+    elif jcd>19:
+        jcd = 19
+
+    return jcd
+
+def jcdTozb(jcd):
+    return MIN + (jcd-1) * CELL
 
 turn = "black"
 
@@ -12,31 +28,6 @@ qizi = []
 
 WIDTH = qipan.width
 HEIGHT = qipan.height
-
-
-# 经过试验， 左上角(1, 1)和右下角(19, 19)的坐标分别为：
-# (17, 17)  (607, 607)
-MIN = 17.0
-MAX = 607.0
-CELL = (MAX-MIN)/18
-
-
-def x2g(x):
-    """把棋盘上的像素坐标转换为棋盘的栅格坐标"""
-    return int(round((x - MIN) / CELL))+1
-
-def pos2grid(pos):
-    return (x2g(pos[0]), x2g(pos[1]))
-
-def g2x(g):
-    """把棋盘的栅格坐标转换为像素坐标"""
-    return (g-1) * CELL + MIN
-
-def grid2pos(grid):
-    return (g2x(grid[0]), g2x(grid[1]))
-
-def improvePos(pos):
-    return grid2pos(pos2grid(pos))
 
 def draw():
     qipan.draw()
@@ -47,13 +38,19 @@ def draw():
     for aQizi in qizi:
         aQizi.draw()
 
+def xiuzheng(x):
+    jcd = zbToJcd(x)
+    return jcdTozb(jcd)
+
+
+
 def on_mouse_move(pos):
-    pos = improvePos(pos)
+    pos = (xiuzheng(pos[0]), xiuzheng(pos[1]))
     black.center = pos
     white.center = pos
 
 def on_mouse_down(pos, button):
-    pos = improvePos(pos)
+    pos = (xiuzheng(pos[0]), xiuzheng(pos[1]))
     if button == mouse.LEFT:
         if kexia():
             luozi(pos)
@@ -71,6 +68,11 @@ def kexia():
         if aQizi.colliderect(black):
             return False
     return True
+
+def showPosition():
+    print("现在棋盘上有这些子： ")
+    for q in qizi:
+        print(q.center)
 
 def luozi(pos):
     global turn
