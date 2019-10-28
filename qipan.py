@@ -1,10 +1,10 @@
-def createEmptyRow():
-    return [0] * 19
+def createEmptyRow(size):
+    return [0] * size
 
 
-def createEmpty():
+def createEmpty(size=19):
     qipan = []
-    for i in range(19):
-        newRow = createEmptyRow()
+    for i in range(size):
+        newRow = createEmptyRow(size)
         qipan.append(newRow)
     return qipan
