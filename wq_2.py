@@ -1,34 +1,26 @@
 import pgzrun
 import qipan
+from suanzuobiao import xiuzheng, zbToJcd, jcdTozb
+from suanqi import tizi
 
-MIN = 14
-MAX = 608
-CELL = (MAX - MIN) / 18
-
-
-def zbToJcd(x):
-    """把坐标转换成交叉点的编号"""
-    jcd = round((x - MIN) / CELL + 1)
-    if jcd < 1:
-        jcd = 1
-    elif jcd > 19:
-        jcd = 19
-
-    return jcd
-
-
-def jcdTozb(jcd):
-    return MIN + (jcd - 1) * CELL
-
-
+# 创建角色
 heizi = Actor("black")
 baizi = Actor("white")
+sbqizi = Actor("black")
+
+# 轮到谁下？
+turn = "black"
+# 换人
+def change_turn():
+    global turn
+    if turn == "black":
+        turn = "white"
+        sbqizi.image = "white"
+    elif turn == "white":
+        turn = "black"
+        sbqizi.image = "black"
 
 p = qipan.createEmpty()
-
-p[0][0] = 1
-p[18][18] = 2
-
 
 beijing = Actor("qipan")
 WIDTH = beijing.width
@@ -61,5 +53,27 @@ def drawQizi():
 def draw():
     beijing.draw()
     drawQizi()
+    sbqizi.draw()
+
+
+def on_mouse_move(pos):
+    sbqizi.center = (xiuzheng(pos[0]), xiuzheng(pos[1]))
+
+def luozi(row, collumn):
+    if turn == "black":
+        color = 1
+    else:
+        color = 2
+    p[row][collumn] = color
+
+def on_mouse_down(pos):
+    x = pos[0]
+    y = pos[1]
+
+    collumn = zbToJcd(x) - 1
+    row = zbToJcd(y) - 1
+    luozi(row, collumn)
+    tizi(p, row, collumn)
+    change_turn()
 
 pgzrun.go()

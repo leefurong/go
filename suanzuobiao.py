@@ -16,3 +16,8 @@ def zbToJcd(x):
 
 def jcdTozb(jcd):
     return MIN + (jcd - 1) * CELL
+
+
+def xiuzheng(x):
+    jcd = zbToJcd(x)
+    return jcdTozb(jcd)
