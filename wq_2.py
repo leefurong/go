@@ -76,4 +76,8 @@ def on_mouse_down(pos):
     tizi(p, row, collumn)
     change_turn()
 
+def on_key_down(key):
+    if key == key.SPACE:
+        print("按下了空格键！")
+
 pgzrun.go()

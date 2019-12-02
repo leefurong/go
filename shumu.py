@@ -1,4 +1,7 @@
+from qipan import createEmpty
+
 def check(qipan, row, collumn, jiyi):
+    """检查qipan中的row行collumn列， 这个格子属于谁。"""
     if jiyi[row][collumn] == 1:
         return 0
 
@@ -85,12 +88,13 @@ def check(qipan, row, collumn, jiyi):
 
 
 def shumu(qipan):
+    """检查qipan中， 黑、白的目数"""
     black = 0
     white = 0
     # 遍历所有行
-    for row in qipan:
+    for i, row in enumerate(qipan):
         # 遍历每一个格子
-        for ge in row:
+        for j, ge in enumerate(row):
             # 对于这个格子来说
             # 如果是子:
             if ge != 0:
@@ -99,7 +103,7 @@ def shumu(qipan):
             # 否则:
             else:
                 # 看看是谁的
-                who = check()
+                who = check(qipan, i, j, createEmpty(len(qipan)))
                 # 如果是黑的:
                 if who == 1:
                     # 黑加一目
@@ -120,19 +124,9 @@ qipan = [
     [2, 2, 1, 1, 2, 0],
     [0, 2, 2, 2, 2, 0],
     [0, 0, 2, 0, 2, 0],
+    [0, 0, 2, 0, 2, 0],
 ]
 
-def createjiyi():
-    return [
-        [0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0],
-    ]
+result = shumu(qipan)
+print(result) # [2, 12]
 
-print(check(qipan, 0, 0, createjiyi())) # 1
-print(check(qipan, 1, 5, createjiyi())) # 2
-
-# result = shumu(qipan)
-# print(result) # [2, 8]
